@@ -137,7 +137,7 @@ wifi
 ![Screen Shot 2022-05-20 at 11 47 33 PM (2)](https://user-images.githubusercontent.com/93491482/169666607-26739fb5-1d5a-4225-bb21-9b0d60293324.png)
 
 this should work now. You can go to your wifi search in your phone and you will see OpenWRT, open wifi. 
-![IMG_3970](https://user-images.githubusercontent.com/93491482/169665183-03db031c-79dc-44e7-aaf0-df5fe9ab7742.PNG) 
+![IMG_3970](https://user-images.githubusercontent.com/93491482/169669252-d9c5fb7d-5698-468b-8a72-b39439c0fd69.PNG)
 
 Now we are going to take that connection and make it connect to your wifi. For that we are going to GUI. Open any web broswer, Here I'll use Google Chrome. And type 10.97.97.1(your customize raspberry pi IP address).
 And login there with your root username and password that you created yearlier fo Raspberry Pi. 
@@ -310,7 +310,9 @@ Now, after login, we are headover our mouse on VPN in the top and click openVPN.
 ### This one of my crazy project project. Basically this is my first project with Raspberry Pi. This is beast. I'm learning new thing to doing this project. My next project will be building Raspberry Pi NAS. 
 
 Thank You (05/21/2022)
-![IMG_3979](https://user-images.githubusercontent.com/93491482/169669130-99a61f61-f84b-46ed-827e-c6f3e7db997d.JPG)![IMG_3980](https://user-images.githubusercontent.com/93491482/169669133-34d0ead3-e50f-4644-9b24-695454dde3f4.jpg)
 
+
+![IMG_3979](https://user-images.githubusercontent.com/93491482/169669266-0b85d429-a811-469e-8263-1eee1df760be.JPG)
+![IMG_3980](https://user-images.githubusercontent.com/93491482/169669378-dabd6455-cd8b-4d5f-a2f2-b56229edf948.jpg)
 
 
