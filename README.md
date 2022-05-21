@@ -201,7 +201,8 @@ and edit this with nano editor. We don't have to enter 'i' this time. just use a
 2. Now in wifi-iface chnage ssid name to anything you want, I used "MuhfatVPN".
 3. Change encryption none to psk2. (you can use any type of encryption)
 4. make a new option. option key 'anything you like'
-![Screen Shot 2022-05-21 at 12 00 47 AM (2)](https://user-images.githubusercontent.com/93491482/169667964-becdb106-1b1b-457c-a53c-bc420a62693d.png)
+![Screen Shot 2022-05-21 at 12 00 47 AM (2)](https://user-images.githubusercontent.com/93491482/169671608-6c902ed0-3b8c-4c2a-af42-2c6707de81c3.png)
+
 
 That's it. Now you to save this nano file and exit. Now save in nano editor we use "Control + X then y, then Enter".
 And just as before to commit our configuration, we'll do
