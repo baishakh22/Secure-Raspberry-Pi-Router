@@ -128,5 +128,187 @@ vi /etc/config/wireless
 ```
 We have to make one change to our radio0 interface, which is the default built-in on our raspberry pi. We have to make this change in order to make this work. 
 ![Screen Shot 2022-05-20 at 11 46 20 PM (2)](https://user-images.githubusercontent.com/93491482/169664254-d229c43f-86ba-4eba-8673-d96edb8d3995.png)
-this should work now. You can go to your wifi search in your phone
-![IMG_3970](https://user-images.githubusercontent.com/93491482/169665183-03db031c-79dc-44e7-aaf0-df5fe9ab7742.PNG)
+
+Then, save and exit from vi editor. ESC > :wq > Enter. Now we have to apply that configuration to our wireless interface. Follow Those commands
+```
+uci commit wireless
+wifi
+```
+![Screen Shot 2022-05-20 at 11 47 33 PM (2)](https://user-images.githubusercontent.com/93491482/169666607-26739fb5-1d5a-4225-bb21-9b0d60293324.png)
+
+this should work now. You can go to your wifi search in your phone and you will see OpenWRT, open wifi. 
+![IMG_3970](https://user-images.githubusercontent.com/93491482/169665183-03db031c-79dc-44e7-aaf0-df5fe9ab7742.PNG) 
+
+Now we are going to take that connection and make it connect to your wifi. For that we are going to GUI. Open any web broswer, Here I'll use Google Chrome. And type 10.97.97.1(your customize raspberry pi IP address).
+And login there with your root username and password that you created yearlier fo Raspberry Pi. 
+![Screen Shot 2022-05-21 at 3 38 31 PM](https://user-images.githubusercontent.com/93491482/169666754-5bfce8db-475b-4fa7-bef2-e34cb9bd46ff.png)
+
+After you login, from the tab select Network > Wireless 
+You will see radio0 wireless interface which We created.
+![Screen Shot 2022-05-20 at 11 50 52 PM (2)](https://user-images.githubusercontent.com/93491482/169666801-4e93fca1-6bd9-4a9f-bd82-bc849c02fcb6.png)
+
+Then click on the scan button on radio0 interface. And it will find all the network in your near by. Select your home network by clicking "Join Network". So this is the simple process we have to do everytime we join in a new network. 
+
+Here, we have to do two things, one is check the box says, "Replace wireless configuration". Then in "WPA passphrase" input your home network password. Then hit on submit and save.
+Then hit "Save & Apply" in the Associate Stations. Now our interface is connected to my network "F31AE2". 
+Now we should have internet in our raspberry pi. How can we check it? Use Ping
+```
+ping google.com
+```
+Oh yeah. It's working. To stop ping control + C. 
+So, now our goal in usb wifi adapter set up. Before we input this wifi adapter, we need to input some command line that will help to recognize this wifi adapter. 
+Go back to terminal then type
+```
+opkg update
+```
+Now we will install bunch of packages all in ones. And will all of this command line should be drivers for the most of the wifi USB adapters you have. Use this command
+
+```
+opkg install kmod-rt2800-lib kmod-rt2800-usb kmod-rt2x00-lib kmod-rt2x00-usb kmod-usb-core kmod-usb-uhci kmod-usb-ohci kmod-usb2 usbutils openvpn-openssl luci-app-openvpn nano
+```
+
+Now our usb wifi adapter is ready to plug in. Before you plug in you can use this following command
+```
+lsusb
+```
+to see the corrent usb adapter added. Here mine has 3 current working usb. 
+![Screen Shot 2022-05-20 at 11 54 12 PM](https://user-images.githubusercontent.com/93491482/169667187-5cf7bb6c-b0cc-4aed-9d6c-6c8326fee14a.png)
+
+After we input our wifi adapter we can run this "lsusb" command again so see if it can recognize it. 
+![Screen Shot 2022-05-20 at 11 54 41 PM](https://user-images.githubusercontent.com/93491482/169667247-ad6ca9d3-b49f-4d2e-9b80-23095b485410.png)
+
+So now bring this "Ralink 802.11 n WLAN" up, make him alive, we need to type one command line. if this command is work for you then mean your driver being accepted. command is
+```
+ifconfig wlan1 up
+```
+if there is no issue, your network in up. To check the interface,  type
+```
+ifconfig
+```
+![Screen Shot 2022-05-20 at 11 55 45 PM](https://user-images.githubusercontent.com/93491482/169667402-5bbe63d1-fa4b-4bab-97f5-2454a62acec1.png)
+This are my interface. 
+
+Here, wlan0 is connecting us to the public wifi or whatever wifi it supposed to be right now. Here in it wifi in my house. And it supplying me internet. On the other hand, wlan1 is doing nothing. We need to configure him to become a wireless access point for us to connect to and have internet. 
+
+## Wireless network Setup
+Now, make our usb wifi adapter functional we need to type in command line:
+```
+nano /etc/config/wireless
+```
+and hit enter. 
+and edit this with nano editor. We don't have to enter 'i' this time. just use arrow key on your keyboard and edit those file. To do edit
+1. In 'config wifi-device 'radio1', make option disabled '0'
+2. Now in wifi-iface chnage ssid name to anything you want, I used "MuhfatVPN".
+3. Change encryption none to psk2. (you can use any type of encryption)
+4. make a new option. option key 'anything you like'
+![Screen Shot 2022-05-21 at 12 00 47 AM (2)](https://user-images.githubusercontent.com/93491482/169667964-becdb106-1b1b-457c-a53c-bc420a62693d.png)
+
+That's it. Now you to save this nano file and exit. Now save in nano editor we use "Control + X then y, then Enter".
+And just as before to commit our configuration, we'll do
+```
+uci commit wireless
+```
+```
+wifi
+```
+Now, we can actually add to our MufatVPN network and access to internet. Use our phone and connect to this wifi and password should be same as option key 'what ever you used'
+#### Boom our wifi is working. Now I have the working router. We can go anywhere, connect to any public network in OpenWRT and wifi works well. However, we are not secure. We are not protected. Our traffic is not encrypted. We are not going secure through VPN. So the next task for us is to config, we are going to set it up to where all of our traffic go over to the NordVPN. This is paid version of VPN. NordVPN is very good, paying for this is totally worth it. As I'm a college student I used my student discount. So before you purchase, look for if there any available discount for you. 
+
+## VPN Setup
+First, we need our client profile set up. So use this link below
+https://nordvpn.com/servers/tools/ 
+go this website. It aready generate your server for you, if you want to change select the country and you will be able to get different server. 
+Secondly, click on the show available protocols. And Download config for OpenVPN UDP.
+Third, we have to upload this file to our raspberry pi. 
+Forth, open a different terminal or command promt. Then go the directory using cd where you download this NordVPN file. Then type
+```
+scp (filename.ovpn) root@10.97.97.1:/etc/openvpn/client.conf
+```
+![Screen Shot 2022-05-21 at 12 40 34 AM](https://user-images.githubusercontent.com/93491482/169668614-0382abd8-b22a-49dd-9384-7bd77581429c.png)
+Here, scp is Secure copy. That's it. then use your raspberry pi password. Boom, it uploaded. To make sure it uploaded go back to your previous terminal or command prompt then type 
+```
+ls /etc/openvpn
+```
+
+### Now here is the crazy part. We have to install all the command bellow one by one. 
+
+```
+# Install packages
+opkg update
+opkginstall luci-app-openvpn
+/etc/init.d/rpcd restart
+```
+
+```
+# Configuration parameters
+OVPN_DIR="/etc/openvpn"
+OVPN_ID="client"
+OVPN_USER="USERNAME"       //this will be your nordvpn username 
+OVPN_PASS="PASSWORD"       //this is your nordvpn password
+
+# Save username/password credentials
+umask go=
+cat << EOF >${OVPN_DIR}/${OVPN_ID}.auth
+${OVPN_USER}
+${OVPN_PASS}
+EOF
+
+# Configure VPN service
+sed -i -e "
+/^auth-user-pass/s/^/#/
+\$a auth-user-pass ${OVPN_ID}.auth
+/^redirect-gateway/s/^/#/
+\$a redirect-gateway def1 ipv6
+" ${OVPN_DIR}/${OVPN_ID}.conf
+/etc/init.d/openvpn restart
+```
+
+```
+# Provide VPN instance management
+ls /etc/openvpn/*.conf \
+| while read -r OVPN_CONF
+do
+OVPN_ID="$(basename ${OVPN_CONF%.*} | sed -e "s/\W/_/g")"
+uci -q delete openvpn.${OVPN_ID}
+uci set openvpn.${OVPN_ID}="openvpn"
+uci set openvpn.${OVPN_ID}.enabled="1"
+uci set openvpn.${OVPN_ID}.config="${OVPN_CONF}"
+done
+uci commit openvpn
+/etc/init.d/openvpn restart
+```
+
+```
+# Configure firewall
+uci rename firewall.@zone[0]="lan"
+uci rename firewall.@zone[1]="wan"
+uci del_list firewall.wan.device="tun+"
+uci add_list firewall.wan.device="tun+"
+uci commit firewall
+/etc/init.d/firewall restart
+```
+
+```
+# Configure hotplug
+mkdir -p /etc/hotplug.d/online
+cat << "EOF" > /etc/hotplug.d/online/00-openvpn
+/etc/init.d/openvpn restart
+EOF
+cat << "EOF" >> /etc/sysupgrade.conf
+/etc/hotplug.d/online/00-openvpn
+EOF
+```
+
+
+
+Perfect!!! That's it, so after we done this command, let's go the GUI in our web browser and type 10.97.97.1, then hit enter. 
+Now, after login, we are headover our mouse on VPN in the top and click openVPN. Here we go, there is a click mark on the client. yes, it's connected. Now you can google your ip address and you will see a different IP address. So now all of my traffic goes over nordvpn through this raspberry pi router. 
+
+
+
+
+### This one of my crazy project project. Basically this is my first project with Raspberry Pi. This is beast. I'm learning new thing to doing this project. My next project will be building Raspberry Pi NAS. 
+
+Thank You (05/21/2022)
+
+
